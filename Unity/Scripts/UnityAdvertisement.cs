@@ -7,7 +7,7 @@ using UnityEngine.Advertisements;
 
 namespace Creobit.Advertising
 {
-    internal sealed class UnityAdvertisement : IUnityAdvertisement
+    internal sealed class UnityAdvertisement : IAdvertisement, IUnityAdvertisement
     {
         #region Object
 
@@ -31,11 +31,14 @@ namespace Creobit.Advertising
 
         bool IAdvertisement.IsReady => IsReady;
 
+        IPromoter IAdvertisement.Promoter => Promoter;
+
         async void IAdvertisement.Prepare(Action onComplete, Action onFailure)
         {
+            var configuration = Promoter.Configuration;
             var cancellationTokenSource = new CancellationTokenSource();
 
-            cancellationTokenSource.CancelAfter(Configuration.Timeout ?? 10000);
+            cancellationTokenSource.CancelAfter(configuration.Timeout ?? 10000);
 
             try
             {
@@ -52,13 +55,13 @@ namespace Creobit.Advertising
             }
             catch (TaskCanceledException)
             {
-                Configuration.RaiseExceptionDetected(new TimeoutException());
+                Promoter.RaiseExceptionDetected(new TimeoutException());
 
                 onFailure();
             }
             catch (Exception exception)
             {
-                Configuration.RaiseExceptionDetected(exception);
+                Promoter.RaiseExceptionDetected(exception);
 
                 onFailure();
             }
@@ -72,7 +75,7 @@ namespace Creobit.Advertising
         {
             if (!IsReady)
             {
-                Configuration.RaiseExceptionDetected(new InvalidOperationException($"Advertisement with \"{Id}\" is not ready!"));
+                Promoter.RaiseExceptionDetected(new InvalidOperationException($"Advertisement with \"{Id}\" is not ready!"));
 
                 onFailure();
 
@@ -101,7 +104,7 @@ namespace Creobit.Advertising
                 }
                 else
                 {
-                    Configuration.RaiseExceptionDetected(new OperationCanceledException($"{nameof(result)}: {result}"));
+                    Promoter.RaiseExceptionDetected(new OperationCanceledException($"{nameof(result)}: {result}"));
 
                     onFailure();
                 }
@@ -113,16 +116,18 @@ namespace Creobit.Advertising
 
         string IUnityAdvertisement.PlacementId => PlacementId;
 
+        IUnityPromoter IUnityAdvertisement.Promoter => Promoter;
+
         #endregion
         #region UnityAdvertisement
 
-        public readonly UnityConfiguration Configuration;
+        public readonly UnityPromoter Promoter;
         public readonly string Id;
         public readonly string PlacementId;
 
-        public UnityAdvertisement(UnityConfiguration configuration, string id, string placementId)
+        public UnityAdvertisement(UnityPromoter promoter, string id, string placementId)
         {
-            Configuration = configuration;
+            Promoter = promoter;
             Id = id;
             PlacementId = placementId;
         }

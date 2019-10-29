@@ -1,16 +1,11 @@
 ﻿#if CREOBIT_ADVERTISING_UNITY && (UNITY_ANDROID || UNITY_IOS)
 namespace Creobit.Advertising
 {
-    public interface IUnityAdvertisement
+    public interface IUnityPromoter
     {
-        #region IUnityAdvertisement
+        #region IUnityPromoter
 
-        string PlacementId
-        {
-            get;
-        }
-
-        IUnityPromoter Promoter
+        UnityPromoterConfiguration Configuration
         {
             get;
         }

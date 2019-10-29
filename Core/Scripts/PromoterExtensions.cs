@@ -11,8 +11,10 @@ namespace Creobit.Advertising
 
         public static async Task InitializeAsync(this IPromoter self)
         {
+            var invokeException = default(Exception);
             var invokeResult = default(bool?);
 
+            self.ExceptionDetected += OnExceptionDetected;
             self.Initialize(
                 () => invokeResult = true,
                 () => invokeResult = false);
@@ -22,9 +24,16 @@ namespace Creobit.Advertising
                 await Task.Delay(MillisecondsDelay);
             }
 
+            self.ExceptionDetected -= OnExceptionDetected;
+
             if (!invokeResult.Value)
             {
-                throw new InvalidOperationException();
+                throw invokeException ?? new InvalidOperationException();
+            }
+
+            void OnExceptionDetected(Exception exception)
+            {
+                invokeException = exception;
             }
         }
 

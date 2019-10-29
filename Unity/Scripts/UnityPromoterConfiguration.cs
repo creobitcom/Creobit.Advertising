@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Creobit.Advertising
 {
-    public sealed class UnityConfiguration
+    public sealed class UnityPromoterConfiguration
     {
-        #region UnityConfiguration
+        #region UnityPromoterConfiguration
 
         public readonly bool DebugMode;
         public readonly string GameId;
@@ -13,9 +13,7 @@ namespace Creobit.Advertising
 
         private IEnumerable<(string AdvertisementId, string PlacementId)> _advertisementMap;
 
-        public event Action<Exception> ExceptionDetected;
-
-        public UnityConfiguration(string gameId, bool debugMode, bool testMode)
+        public UnityPromoterConfiguration(string gameId, bool debugMode, bool testMode)
         {
             GameId = gameId;
             DebugMode = debugMode;
@@ -32,11 +30,6 @@ namespace Creobit.Advertising
         {
             get;
             set;
-        }
-
-        internal void RaiseExceptionDetected(Exception exception)
-        {
-            ExceptionDetected?.Invoke(exception);
         }
 
         #endregion

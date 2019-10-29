@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Creobit.Advertising
 {
-    public sealed class FakeAdvertisement : IFakeAdvertisement
+    public sealed class FakeAdvertisement : IAdvertisement, IFakeAdvertisement
     {
         #region Object
 
@@ -27,6 +27,8 @@ namespace Creobit.Advertising
 
         bool IAdvertisement.IsReady => IsReady;
 
+        IPromoter IAdvertisement.Promoter => Promoter;
+
         void IAdvertisement.Prepare(Action onComplete, Action onFailure)
         {
             IsReady = true;
@@ -44,7 +46,7 @@ namespace Creobit.Advertising
             }
             else
             {
-                Configuration.RaiseExceptionDetected(new InvalidOperationException($"Advertisement with \"{Id}\" is not ready!"));
+                Promoter.RaiseExceptionDetected(new InvalidOperationException($"Advertisement with \"{Id}\" is not ready!"));
 
                 onFailure();
             }
@@ -53,18 +55,20 @@ namespace Creobit.Advertising
         #endregion
         #region IFakeAdvertisement
 
+        IFakePromoter IFakeAdvertisement.Promoter => Promoter;
+
         string IFakeAdvertisement.Tag => Tag;
 
         #endregion
         #region FakeAdvertisement
 
-        public readonly FakeConfiguration Configuration;
+        public readonly FakePromoter Promoter;
         public readonly string Id;
         public readonly string Tag;
 
-        public FakeAdvertisement(FakeConfiguration configuration, string id, string tag)
+        public FakeAdvertisement(FakePromoter promoter, string id, string tag)
         {
-            Configuration = configuration;
+            Promoter = promoter;
             Id = id;
             Tag = tag;
         }

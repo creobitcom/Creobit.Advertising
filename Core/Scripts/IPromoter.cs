@@ -7,6 +7,8 @@ namespace Creobit.Advertising
     {
         #region IPromoter
 
+        event Action<Exception> ExceptionDetected;
+
         IEnumerable<IAdvertisement> Advertisements
         {
             get;

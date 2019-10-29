@@ -11,8 +11,11 @@ namespace Creobit.Advertising
 
         public static async Task PrepareAsync(this IAdvertisement self)
         {
+            var promoter = self.Promoter;
+            var invokeException = default(Exception);
             var invokeResult = default(bool?);
 
+            promoter.ExceptionDetected += OnExceptionDetected;
             self.Prepare(
                 () => invokeResult = true,
                 () => invokeResult = false);
@@ -22,16 +25,26 @@ namespace Creobit.Advertising
                 await Task.Delay(MillisecondsDelay);
             }
 
+            promoter.ExceptionDetected -= OnExceptionDetected;
+
             if (!invokeResult.Value)
             {
-                throw new InvalidOperationException();
+                throw invokeException ?? new InvalidOperationException();
+            }
+
+            void OnExceptionDetected(Exception exception)
+            {
+                invokeException = exception;
             }
         }
 
         public static async Task ShowAsync(this IAdvertisement self)
         {
+            var promoter = self.Promoter;
+            var invokeException = default(Exception);
             var invokeResult = default(bool?);
 
+            promoter.ExceptionDetected += OnExceptionDetected;
             self.Show(
                 () => invokeResult = true,
                 () => invokeResult = false);
@@ -41,9 +54,16 @@ namespace Creobit.Advertising
                 await Task.Delay(MillisecondsDelay);
             }
 
+            promoter.ExceptionDetected -= OnExceptionDetected;
+
             if (!invokeResult.Value)
             {
-                throw new InvalidOperationException();
+                throw invokeException ?? new InvalidOperationException();
+            }
+
+            void OnExceptionDetected(Exception exception)
+            {
+                invokeException = exception;
             }
         }
 

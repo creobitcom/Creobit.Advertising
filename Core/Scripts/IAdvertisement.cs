@@ -16,6 +16,11 @@ namespace Creobit.Advertising
             get;
         }
 
+        IPromoter Promoter
+        {
+            get;
+        }
+
         void Prepare(Action onComplete, Action onFailure);
 
         void Show(Action onComplete, Action onFailure);

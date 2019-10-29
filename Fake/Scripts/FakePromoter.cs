@@ -3,9 +3,11 @@ using System.Collections.Generic;
 
 namespace Creobit.Advertising
 {
-    public sealed class FakePromoter : IPromoter
+    public sealed class FakePromoter : IPromoter, IFakePromoter
     {
         #region IPromoter
+
+        public event Action<Exception> ExceptionDetected;
 
         IEnumerable<IAdvertisement> IPromoter.Advertisements => Advertisements;
 
@@ -17,34 +19,44 @@ namespace Creobit.Advertising
         }
 
         #endregion
+        #region IFakePromoter
+
+        FakePromoterConfiguration IFakePromoter.Configuration => Configuration;
+
+        #endregion
         #region FakePromoter
 
-        public readonly FakeConfiguration Configuration;
+        public readonly FakePromoterConfiguration Configuration;
 
-        private IList<IAdvertisement> _advertisements;
+        private IList<FakeAdvertisement> _advertisements;
 
-        public FakePromoter(FakeConfiguration configuration)
+        public FakePromoter(FakePromoterConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        private IList<IAdvertisement> Advertisements
+        private IList<FakeAdvertisement> Advertisements
         {
-            get => _advertisements ?? Array.Empty<IAdvertisement>();
+            get => _advertisements ?? Array.Empty<FakeAdvertisement>();
             set => _advertisements = value;
+        }
+
+        internal void RaiseExceptionDetected(Exception exception)
+        {
+            ExceptionDetected?.Invoke(exception);
         }
 
         private void UpdateAdvertisements()
         {
             Advertisements = CreateAdvertisements();
 
-            List<IAdvertisement> CreateAdvertisements()
+            List<FakeAdvertisement> CreateAdvertisements()
             {
-                var advertisements = new List<IAdvertisement>();
+                var advertisements = new List<FakeAdvertisement>();
 
                 foreach (var (AdvertisementId, Tag) in Configuration.AdvertisementMap)
                 {
-                    var advertisement = new FakeAdvertisement(Configuration, AdvertisementId, Tag);
+                    var advertisement = new FakeAdvertisement(this, AdvertisementId, Tag);
 
                     advertisements.Add(advertisement);
                 }

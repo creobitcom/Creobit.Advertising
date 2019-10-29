@@ -5,9 +5,11 @@ using UnityEngine.Advertisements;
 
 namespace Creobit.Advertising
 {
-    public sealed class UnityPromoter : IPromoter
+    public sealed class UnityPromoter : IPromoter, IUnityPromoter
     {
         #region IPromoter
+
+        public event Action<Exception> ExceptionDetected;
 
         IEnumerable<IAdvertisement> IPromoter.Advertisements => Advertisements;
 
@@ -15,7 +17,7 @@ namespace Creobit.Advertising
         {
             if (string.IsNullOrWhiteSpace(Configuration.GameId))
             {
-                Configuration.RaiseExceptionDetected(new InvalidOperationException($"{nameof(Configuration.GameId)} is null or whitespace!"));
+                RaiseExceptionDetected(new InvalidOperationException($"{nameof(Configuration.GameId)} is null or whitespace!"));
 
                 onFailure();
 
@@ -30,34 +32,44 @@ namespace Creobit.Advertising
         }
 
         #endregion
+        #region IUnityPromoter
+
+        UnityPromoterConfiguration IUnityPromoter.Configuration => Configuration;
+
+        #endregion
         #region UnityPromoter
 
-        public readonly UnityConfiguration Configuration;
+        public readonly UnityPromoterConfiguration Configuration;
 
-        private IList<IAdvertisement> _advertisements;
+        private IList<UnityAdvertisement> _advertisements;
 
-        public UnityPromoter(UnityConfiguration configuration)
+        public UnityPromoter(UnityPromoterConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        private IList<IAdvertisement> Advertisements
+        private IList<UnityAdvertisement> Advertisements
         {
-            get => _advertisements ?? Array.Empty<IAdvertisement>();
+            get => _advertisements ?? Array.Empty<UnityAdvertisement>();
             set => _advertisements = value;
+        }
+
+        internal void RaiseExceptionDetected(Exception exception)
+        {
+            ExceptionDetected?.Invoke(exception);
         }
 
         private void UpdateAdvertisements()
         {
             Advertisements = CreateAdvertisements();
 
-            List<IAdvertisement> CreateAdvertisements()
+            List<UnityAdvertisement> CreateAdvertisements()
             {
-                var advertisements = new List<IAdvertisement>();
+                var advertisements = new List<UnityAdvertisement>();
 
                 foreach (var (AdvertisementId, PlacementId) in Configuration.AdvertisementMap)
                 {
-                    var advertisement = new UnityAdvertisement(Configuration, AdvertisementId, PlacementId);
+                    var advertisement = new UnityAdvertisement(this, AdvertisementId, PlacementId);
 
                     advertisements.Add(advertisement);
                 }

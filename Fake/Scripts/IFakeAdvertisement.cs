@@ -1,8 +1,13 @@
 ﻿namespace Creobit.Advertising
 {
-    public interface IFakeAdvertisement : IAdvertisement
+    public interface IFakeAdvertisement
     {
         #region IFakeAdvertisement
+
+        IFakePromoter Promoter
+        {
+            get;
+        }
 
         string Tag
         {

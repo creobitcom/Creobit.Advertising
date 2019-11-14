@@ -23,7 +23,7 @@ namespace Creobit.Advertising
 
         void Prepare(Action onComplete, Action onFailure);
 
-        void Show(Action onComplete, Action onFailure);
+        void Show(Action onComplete, Action onSkip, Action onFailure);
 
         #endregion
     }

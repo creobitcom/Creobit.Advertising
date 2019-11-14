@@ -71,7 +71,7 @@ namespace Creobit.Advertising
             }
         }
 
-        void IAdvertisement.Show(Action onComplete, Action onFailure)
+        void IAdvertisement.Show(Action onComplete, Action onSkip, Action onFailure)
         {
             if (!IsReady)
             {
@@ -98,15 +98,19 @@ namespace Creobit.Advertising
 
             void OnResult(ShowResult result)
             {
-                if (result == ShowResult.Finished)
+                switch (result)
                 {
-                    onComplete();
-                }
-                else
-                {
-                    Promoter.RaiseExceptionDetected(new OperationCanceledException($"{nameof(result)}: {result}"));
-
-                    onFailure();
+                    case ShowResult.Failed:
+                        Promoter.RaiseExceptionDetected(new OperationCanceledException($"{nameof(result)}: {result}"));
+                        onFailure();
+                        break;
+                    case ShowResult.Skipped:
+                        Promoter.RaiseExceptionDetected(new SkipException());
+                        onSkip();
+                        break;
+                    case ShowResult.Finished:
+                        onComplete();
+                        break;
                 }
             }
         }

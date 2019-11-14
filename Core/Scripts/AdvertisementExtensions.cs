@@ -41,30 +41,43 @@ namespace Creobit.Advertising
         public static async Task ShowAsync(this IAdvertisement self)
         {
             var promoter = self.Promoter;
-            var invokeException = default(Exception);
-            var invokeResult = default(bool?);
+            var outputException = default(Exception);
+            var outputShowResult = default(ShowResult?);
 
             promoter.ExceptionDetected += OnExceptionDetected;
             self.Show(
-                () => invokeResult = true,
-                () => invokeResult = false);
+                () => outputShowResult = ShowResult.Complete,
+                () => outputShowResult = ShowResult.Skip,
+                () => outputShowResult = ShowResult.Failure);
 
-            while (!invokeResult.HasValue)
+            while (!outputShowResult.HasValue)
             {
                 await Task.Delay(MillisecondsDelay);
             }
 
             promoter.ExceptionDetected -= OnExceptionDetected;
 
-            if (!invokeResult.Value)
+            switch (outputShowResult.Value)
             {
-                throw invokeException ?? new InvalidOperationException();
+                case ShowResult.Complete:
+                    break;
+                case ShowResult.Skip:
+                    throw new SkipException();
+                case ShowResult.Failure:
+                    throw outputException ?? new InvalidOperationException();
             }
 
             void OnExceptionDetected(Exception exception)
             {
-                invokeException = exception;
+                outputException = exception;
             }
+        }
+
+        private enum ShowResult
+        {
+            Complete,
+            Skip,
+            Failure
         }
 
         #endregion

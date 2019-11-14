@@ -36,7 +36,7 @@ namespace Creobit.Advertising
             onComplete();
         }
 
-        void IAdvertisement.Show(Action onComplete, Action onFailure)
+        void IAdvertisement.Show(Action onComplete, Action onSkip, Action onFailure)
         {
             if (IsReady)
             {

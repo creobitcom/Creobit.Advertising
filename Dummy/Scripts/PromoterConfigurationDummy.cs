@@ -5,12 +5,20 @@ namespace Creobit.Advertising
 {
     public sealed class PromoterConfigurationDummy
     {
-        private IEnumerable<(string AdvertisementId, string Tag)> _advertisementMap;
+        private IEnumerable<IAdvertisement> _advertisementMap;
 
-        public IEnumerable<(string AdvertisementId, string Tag)> AdvertisementMap
+        public IEnumerable<IAdvertisement> AdvertisementMap
         {
-            get => _advertisementMap ?? Array.Empty<(string AdvertisementId, string Tag)>();
+            get => _advertisementMap ?? Array.Empty<IAdvertisement>();
             set => _advertisementMap = value;
+        }
+
+        public PromoterConfigurationDummy()
+        {
+            _advertisementMap = new AdvertisementDummy[]
+            {
+                new AdvertisementDummy("Example", "rewardedVideo")
+            };
         }
     }
 }

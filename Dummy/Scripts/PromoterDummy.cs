@@ -11,53 +11,25 @@ namespace Creobit.Advertising
 
         IEnumerable<IAdvertisement> IPromoter.Advertisements => Advertisements;
 
-        void IPromoter.Initialize(Action onComplete, Action onFailure)
-        {
-            UpdateAdvertisements();
-
-            onComplete();
-        }
-
         #endregion
         #region PromoterDummy
 
-        public readonly PromoterConfigurationDummy Configuration;
+        private IEnumerable<IAdvertisement> _advertisements;
 
-        private IList<AdvertisementDummy> _advertisements;
-
-        public PromoterDummy(PromoterConfigurationDummy configuration)
+        public PromoterDummy(IEnumerable<IAdvertisement> usedAdvertisements)
         {
-            Configuration = configuration;
+            _advertisements = usedAdvertisements;
         }
 
-        private IList<AdvertisementDummy> Advertisements
+        private IEnumerable<IAdvertisement> Advertisements
         {
-            get => _advertisements ?? Array.Empty<AdvertisementDummy>();
+            get => _advertisements ?? Array.Empty<IAdvertisement>();
             set => _advertisements = value;
         }
 
         internal void RaiseExceptionDetected(Exception exception)
         {
             ExceptionDetected?.Invoke(exception);
-        }
-
-        private void UpdateAdvertisements()
-        {
-            Advertisements = CreateAdvertisements();
-
-            List<AdvertisementDummy> CreateAdvertisements()
-            {
-                var advertisements = new List<AdvertisementDummy>();
-
-                foreach (var (AdvertisementId, Tag) in Configuration.AdvertisementMap)
-                {
-                    var advertisement = new AdvertisementDummy(AdvertisementId, Tag);
-
-                    advertisements.Add(advertisement);
-                }
-
-                return advertisements;
-            }
         }
 
         #endregion

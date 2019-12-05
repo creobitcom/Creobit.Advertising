@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Creobit.Advertising
 {
-    public sealed class PromoterDummy : IPromoter, IPromoterDummy
+    public sealed class PromoterDummy : IPromoter
     {
         #region IPromoter
 
@@ -17,11 +17,6 @@ namespace Creobit.Advertising
 
             onComplete();
         }
-
-        #endregion
-        #region IPromoterDummy
-
-        PromoterConfigurationDummy IPromoterDummy.Configuration => Configuration;
 
         #endregion
         #region PromoterDummy
@@ -56,7 +51,7 @@ namespace Creobit.Advertising
 
                 foreach (var (AdvertisementId, Tag) in Configuration.AdvertisementMap)
                 {
-                    var advertisement = new AdvertisementDummy(this, AdvertisementId, Tag);
+                    var advertisement = new AdvertisementDummy(AdvertisementId, Tag);
 
                     advertisements.Add(advertisement);
                 }

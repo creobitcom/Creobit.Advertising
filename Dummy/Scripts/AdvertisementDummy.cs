@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Creobit.Advertising
 {
-    public sealed class AdvertisementDummy : IAdvertisement, IAdvertisementDummy
+    public sealed class AdvertisementDummy : IAdvertisement
     {
         #region Object
 
@@ -27,8 +27,6 @@ namespace Creobit.Advertising
 
         bool IAdvertisement.IsReady => IsReady;
 
-        IPromoter IAdvertisement.Promoter => Promoter;
-
         void IAdvertisement.Prepare(Action onComplete, Action onFailure)
         {
             IsReady = true;
@@ -46,29 +44,18 @@ namespace Creobit.Advertising
             }
             else
             {
-                Promoter.RaiseExceptionDetected(new InvalidOperationException($"Advertisement with \"{Id}\" is not ready!"));
-
                 onFailure();
             }
         }
 
         #endregion
-        #region IAdvertisementDummy
-
-        IPromoterDummy IAdvertisementDummy.Promoter => Promoter;
-
-        string IAdvertisementDummy.Tag => Tag;
-
-        #endregion
         #region AdvertisementDummy
 
-        public readonly PromoterDummy Promoter;
         public readonly string Id;
         public readonly string Tag;
 
-        public AdvertisementDummy(PromoterDummy promoter, string id, string tag)
+        public AdvertisementDummy(string id, string tag)
         {
-            Promoter = promoter;
             Id = id;
             Tag = tag;
         }

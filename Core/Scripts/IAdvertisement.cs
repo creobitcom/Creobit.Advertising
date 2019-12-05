@@ -4,8 +4,6 @@ namespace Creobit.Advertising
 {
     public interface IAdvertisement
     {
-        #region IAdvertisement
-
         string Id
         {
             get;
@@ -16,15 +14,8 @@ namespace Creobit.Advertising
             get;
         }
 
-        IPromoter Promoter
-        {
-            get;
-        }
-
         void Prepare(Action onComplete, Action onFailure);
 
         void Show(Action onComplete, Action onSkip, Action onFailure);
-
-        #endregion
     }
 }

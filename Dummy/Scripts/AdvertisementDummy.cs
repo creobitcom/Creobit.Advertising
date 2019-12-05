@@ -23,8 +23,6 @@ namespace Creobit.Advertising
         #endregion
         #region IAdvertisement
 
-        string IAdvertisement.Id => Id;
-
         string IAdvertisement.Tag => Tag;
 
         string IAdvertisement.PlatformId => PlatformId;

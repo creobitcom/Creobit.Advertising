@@ -4,10 +4,6 @@ namespace Creobit.Advertising
 {
     public interface IAdvertisement
     {
-        string Id
-        {
-            get;
-        }
 
         string PlatformId
         {

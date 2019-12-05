@@ -1,24 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Creobit.Advertising
 {
-    public sealed class PromoterDummy : IPromoter
+    public sealed class Promoter : IPromoter
     {
         #region IPromoter
 
         public event Action<Exception> ExceptionDetected;
 
-        IEnumerable<IAdvertisement> IPromoter.Advertisements => Advertisements;
+        IEnumerable<IAdvertisement> IPromoter.Advertisements => Advertisements.
+            Where(platform => _platformAuthManager.AuthenticatedPlatforms.Contains(platform.Id));
 
         #endregion
         #region PromoterDummy
 
         private IEnumerable<IAdvertisement> _advertisements;
 
-        public PromoterDummy(IEnumerable<IAdvertisement> usedAdvertisements)
+        public Promoter(IEnumerable<IAdvertisement> usedAdvertisements, IPlatformAuthManager platformAuthManager)
         {
-            _advertisements = usedAdvertisements;
+            Advertisements = usedAdvertisements;
+            _platformAuthManager = platformAuthManager;
         }
 
         private IEnumerable<IAdvertisement> Advertisements
@@ -31,6 +34,8 @@ namespace Creobit.Advertising
         {
             ExceptionDetected?.Invoke(exception);
         }
+
+        private IPlatformAuthManager _platformAuthManager;
 
         #endregion
     }

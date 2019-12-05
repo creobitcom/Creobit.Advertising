@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace Creobit.Advertising
 {
-    public sealed class FakePromoterConfiguration
+    public sealed class PromoterConfigurationDummy
     {
-        #region FakePromoterConfiguration
-
         private IEnumerable<(string AdvertisementId, string Tag)> _advertisementMap;
 
         public IEnumerable<(string AdvertisementId, string Tag)> AdvertisementMap
@@ -14,7 +12,5 @@ namespace Creobit.Advertising
             get => _advertisementMap ?? Array.Empty<(string AdvertisementId, string Tag)>();
             set => _advertisementMap = value;
         }
-
-        #endregion
     }
 }

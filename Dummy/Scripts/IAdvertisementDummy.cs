@@ -1,10 +1,8 @@
 ﻿namespace Creobit.Advertising
 {
-    public interface IFakeAdvertisement
+    public interface IAdvertisementDummy
     {
-        #region IFakeAdvertisement
-
-        IFakePromoter Promoter
+        IPromoterDummy Promoter
         {
             get;
         }
@@ -13,7 +11,5 @@
         {
             get;
         }
-
-        #endregion
     }
 }

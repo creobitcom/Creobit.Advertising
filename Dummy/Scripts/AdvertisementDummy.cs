@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Creobit.Advertising
 {
-    public sealed class FakeAdvertisement : IAdvertisement, IFakeAdvertisement
+    public sealed class AdvertisementDummy : IAdvertisement, IAdvertisementDummy
     {
         #region Object
 
@@ -53,20 +53,20 @@ namespace Creobit.Advertising
         }
 
         #endregion
-        #region IFakeAdvertisement
+        #region IAdvertisementDummy
 
-        IFakePromoter IFakeAdvertisement.Promoter => Promoter;
+        IPromoterDummy IAdvertisementDummy.Promoter => Promoter;
 
-        string IFakeAdvertisement.Tag => Tag;
+        string IAdvertisementDummy.Tag => Tag;
 
         #endregion
-        #region FakeAdvertisement
+        #region AdvertisementDummy
 
-        public readonly FakePromoter Promoter;
+        public readonly PromoterDummy Promoter;
         public readonly string Id;
         public readonly string Tag;
 
-        public FakeAdvertisement(FakePromoter promoter, string id, string tag)
+        public AdvertisementDummy(PromoterDummy promoter, string id, string tag)
         {
             Promoter = promoter;
             Id = id;

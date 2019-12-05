@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Creobit.Advertising
 {
-    public sealed class FakePromoter : IPromoter, IFakePromoter
+    public sealed class PromoterDummy : IPromoter, IPromoterDummy
     {
         #region IPromoter
 
@@ -19,25 +19,25 @@ namespace Creobit.Advertising
         }
 
         #endregion
-        #region IFakePromoter
+        #region IPromoterDummy
 
-        FakePromoterConfiguration IFakePromoter.Configuration => Configuration;
+        PromoterConfigurationDummy IPromoterDummy.Configuration => Configuration;
 
         #endregion
-        #region FakePromoter
+        #region PromoterDummy
 
-        public readonly FakePromoterConfiguration Configuration;
+        public readonly PromoterConfigurationDummy Configuration;
 
-        private IList<FakeAdvertisement> _advertisements;
+        private IList<AdvertisementDummy> _advertisements;
 
-        public FakePromoter(FakePromoterConfiguration configuration)
+        public PromoterDummy(PromoterConfigurationDummy configuration)
         {
             Configuration = configuration;
         }
 
-        private IList<FakeAdvertisement> Advertisements
+        private IList<AdvertisementDummy> Advertisements
         {
-            get => _advertisements ?? Array.Empty<FakeAdvertisement>();
+            get => _advertisements ?? Array.Empty<AdvertisementDummy>();
             set => _advertisements = value;
         }
 
@@ -50,13 +50,13 @@ namespace Creobit.Advertising
         {
             Advertisements = CreateAdvertisements();
 
-            List<FakeAdvertisement> CreateAdvertisements()
+            List<AdvertisementDummy> CreateAdvertisements()
             {
-                var advertisements = new List<FakeAdvertisement>();
+                var advertisements = new List<AdvertisementDummy>();
 
                 foreach (var (AdvertisementId, Tag) in Configuration.AdvertisementMap)
                 {
-                    var advertisement = new FakeAdvertisement(this, AdvertisementId, Tag);
+                    var advertisement = new AdvertisementDummy(this, AdvertisementId, Tag);
 
                     advertisements.Add(advertisement);
                 }

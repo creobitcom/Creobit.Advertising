@@ -5,19 +5,36 @@ namespace Creobit.Advertising
 {
     public sealed class PromoterConfigurationDummy : IAdvertisementConfiguration
     {
-        private IEnumerable<IAdvertisement> _advertisementMap;
+        #region IAdvertisementConfiguration
 
         public IEnumerable<IAdvertisement> Advertisements
         {
             get => _advertisementMap ?? Array.Empty<IAdvertisement>();
-            set => _advertisementMap = value;
+            private set => _advertisementMap = value;
         }
+
+        public IEnumerable<IPlatformAuth> Platforms
+        {
+            get => _platformMap ?? Array.Empty<IPlatformAuth>();
+            private set => _platformMap = value;
+        }
+
+        #endregion
+
+        private IEnumerable<IAdvertisement> _advertisementMap;
+        private IEnumerable<IPlatformAuth> _platformMap;
+
 
         public PromoterConfigurationDummy()
         {
             _advertisementMap = new AdvertisementDummy[]
             {
                 new AdvertisementDummy("Example", "rewardedVideo")
+            };
+
+            _platformMap = new PlatformAuthDummy[]
+            {
+                new PlatformAuthDummy()
             };
         }
     }

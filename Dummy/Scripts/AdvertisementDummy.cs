@@ -25,6 +25,10 @@ namespace Creobit.Advertising
 
         string IAdvertisement.Id => Id;
 
+        string IAdvertisement.Tag => Tag;
+
+        string IAdvertisement.PlatformId => PlatformId;
+
         bool IAdvertisement.IsReady => IsReady;
 
         void IAdvertisement.Prepare(Action onComplete, Action onFailure)
@@ -51,8 +55,9 @@ namespace Creobit.Advertising
         #endregion
         #region AdvertisementDummy
 
-        public readonly string Id;
-        public readonly string Tag;
+        private readonly string Id;
+        private readonly string Tag;
+        private readonly string PlatformId = "Dummy";
 
         public AdvertisementDummy(string id, string tag)
         {

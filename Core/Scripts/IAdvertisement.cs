@@ -9,6 +9,16 @@ namespace Creobit.Advertising
             get;
         }
 
+        string PlatformId
+        {
+            get;
+        }
+
+        string Tag
+        {
+            get;
+        }
+
         bool IsReady
         {
             get;

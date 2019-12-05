@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Creobit.Advertising
 {
-    public sealed class PromoterConfigurationDummy
+    public sealed class PromoterConfigurationDummy : IAdvertisementConfiguration
     {
         private IEnumerable<IAdvertisement> _advertisementMap;
 
-        public IEnumerable<IAdvertisement> AdvertisementMap
+        public IEnumerable<IAdvertisement> Advertisements
         {
             get => _advertisementMap ?? Array.Empty<IAdvertisement>();
             set => _advertisementMap = value;

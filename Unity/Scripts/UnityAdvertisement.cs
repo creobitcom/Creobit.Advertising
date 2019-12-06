@@ -1,4 +1,4 @@
-﻿#if CREOBIT_ADVERTISING_UNITY && (UNITY_ANDROID || UNITY_IOS)
+#if DISABLED
 using System;
 using System.Text;
 using System.Threading;
@@ -27,11 +27,7 @@ namespace Creobit.Advertising
         #endregion
         #region IAdvertisement
 
-        string IAdvertisement.Id => Id;
-
         bool IAdvertisement.IsReady => IsReady;
-
-        IPromoter IAdvertisement.Promoter => Promoter;
 
         async void IAdvertisement.Prepare(Action onComplete, Action onFailure)
         {

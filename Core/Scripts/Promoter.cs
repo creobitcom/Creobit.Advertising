@@ -10,8 +10,7 @@ namespace Creobit.Advertising
 
         public event Action<Exception> ExceptionDetected;
 
-        IEnumerable<IAdvertisement> IPromoter.Advertisements => Advertisements.
-            Where(advertisement => _platformAuthManager.AuthenticatedPlatforms.Contains(advertisement.PlatformId));
+        IEnumerable<IAdvertisement> IPromoter.Advertisements => Advertisements.Where(advertisement => _platformAuthManager.AuthenticatedPlatforms.Contains(advertisement.PlatformId));
 
         #endregion
         #region PromoterDummy

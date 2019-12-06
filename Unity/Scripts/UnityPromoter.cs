@@ -1,4 +1,4 @@
-﻿#if CREOBIT_ADVERTISING_UNITY && (UNITY_ANDROID || UNITY_IOS)
+#if DISABLED
 using System;
 using System.Collections.Generic;
 using UnityEngine.Advertisements;

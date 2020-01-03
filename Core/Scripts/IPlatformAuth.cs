@@ -1,9 +1,12 @@
 ﻿using System;
 
-public interface IPlatformAuth
+namespace Creobit.Advertising
 {
-    string Id { get; }
-    bool IsInitialized { get; }
+    public interface IPlatformAuth
+    {
+        string Id { get; }
+        bool IsInitialized { get; }
 
-    void Initialize(Action onSuccess, Action onFailed);
+        void Initialize(Action onSuccess, Action onFailed);
+    }
 }
